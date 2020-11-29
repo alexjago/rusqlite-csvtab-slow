@@ -69,7 +69,7 @@ fn query_one(db: &Connection) {
 fn query_slow(db: &Connection, stop_id: usize) {
     //! Execute the INNER JOIN query
 
-    let q = format!("SELECT count(*) FROM TripSeqs WHERE stop_id IS '{}'", stop_id);
+    let q = format!("SELECT count(*) FROM TripSeqs WHERE stop_id IS '{}';", stop_id);
     eprintln!("{}", q);
 
     let mut stmt = db
