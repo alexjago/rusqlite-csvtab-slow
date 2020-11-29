@@ -13,8 +13,11 @@ fn main() {
     println!("This first query should complete quickly");
     query_one(&db);
 
-    println!("\nThis second query should not complete quickly in Rust, but took the same time in the SQLite shell.");
-    query_two(&db);
+    println!("\nThis second query be slow in Rust, but was almost as quick as #1 in the SQLite shell.");
+    query_slow(&db, 893);
+    
+    println!("\nThis third query is like #2 but should be quick, with many fewer rows involved.");
+    query_slow(&db, 313178);
     
 }
 
@@ -63,22 +66,24 @@ fn query_one(db: &Connection) {
     }
 }
 
-fn query_two(db: &Connection) {
-    //! Execute the second, slow query on an INNER JOIN view
+fn query_slow(db: &Connection, stop_id: usize) {
+    //! Execute the INNER JOIN query
 
-    let q = "SELECT count(*) FROM TripSeqs WHERE stop_id IS '893'";
+    let q = format!("SELECT count(*) FROM TripSeqs WHERE stop_id IS '{}'", stop_id);
     eprintln!("{}", q);
 
     let mut stmt = db
-        .prepare(q)
+        .prepare(&q)
         .unwrap();
     let mut rows = stmt.query(NO_PARAMS).expect("Failed query");
 
-    println!("Prepared statement, called query(), slowdown imminent");
+    println!("Prepared statement, called query() ...");
     
-    // iterators are lazy, so calling next() like this demonstrates
+    // iterators are lazy, so calling next() like this demonstrates the slowness
 
     let r: i64 = rows.next().unwrap().unwrap().get_unwrap(0);
 
     println!("{:?}", r);
 }  
+
+
