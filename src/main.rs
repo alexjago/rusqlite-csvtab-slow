@@ -1,4 +1,4 @@
-use rusqlite::{params, Connection, Result, NO_PARAMS};
+use rusqlite::{Connection, Result, NO_PARAMS};
 use std::time::{Instant};
 
 fn main() {
