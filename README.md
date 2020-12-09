@@ -1,9 +1,9 @@
 # rusqlite-csvtab-slow
-A minimal demonstration of performance issues with Rusqlite's CSV tables feature. 
+A minimal demonstration of a performance caveat with Rusqlite's CSV tables feature. 
 
 # Summary
 
-If you're doing, for example, multi-table JOINs, you need to be sure to load your tables into memory first. This is a separate step from setting up the virtual table. 
+If you're doing, for example, multi-table JOINs, you need to be sure to **load your tables into memory first.** This is a separate step from setting up the virtual table. 
 
 `CREATE VIRTUAL TABLE foobar_v USING csv(...);` needs to be followed by `CREATE TABLE foobar AS SELECT * FROM foobar_v;`.
 
